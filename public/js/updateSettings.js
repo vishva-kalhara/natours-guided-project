@@ -2,6 +2,7 @@
 const alertModule = require('./alert');
 
 exports.updateSettings = async (type, data) => {
+  // console.log('touched');
   try {
     const res = await axios({
       method: 'PATCH',

@@ -52,9 +52,8 @@ block content
 
             .user-view__content
                 .user-view__form-container
-                    #form-user-data
                         h2.heading-secondary.ma-bt-md Your account settings
-                        form.form.form-user-data
+                        form.form.form-user-data#form-user-data
                             .form__group
                                 label.form__label(for='name') Name
                                 input#name.form__input(type='text', value= user.name, required)
@@ -63,7 +62,9 @@ block content
                                 input#email.form__input(type='email', value= user.email, required)
                             .form__group.form__photo-upload
                                 img.form__user-photo(src=`img/users/${user.photo}`, alt= user.name)
-                                a.btn-text(href='') Choose new photo
+                                input.form__upload#photo(type='file', accept='image/*', name='photo')
+                                label(for='photo') Choose new photo
+                                //- a.btn-text(href='') Choose new photo
                             .form__group.right
                                 button.btn.btn--small.btn--green.btn--save-settings Save settings
 

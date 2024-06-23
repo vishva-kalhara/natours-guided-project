@@ -4,7 +4,7 @@ const { promisify } = require('util');
 const User = require('../models/userModel');
 const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
-const sendEmail = require('../utils/email');
+const Email = require('../utils/email');
 
 const signToken = (id) =>
   jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -43,6 +43,9 @@ exports.signUp = catchAsync(async (req, res, next) => {
     password: req.body.password,
     confirmPassword: req.body.confirmPassword,
   });
+
+  const url = `${req.protocol}://${req.get('host')}/account`;
+  await new Email(newUser, url).sendWelcome();
 
   createSendToken(newUser, 201, res);
 });
@@ -127,8 +130,10 @@ exports.isLoggedIn = async (req, res, next) => {
       if (isChangedPassword) return next();
 
       res.locals.user = userExist;
+      // console.log(userExist);
       return next();
     }
+    // console.log('JWT not found');
     return next();
   } catch (error) {
     return next();
@@ -158,14 +163,16 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
     'host',
   )}/api/v1/users/resetPassword/${token}`;
 
-  const message = `Here is your password reset URL: ${resetURL}`;
+  // const message = `Here is your password reset URL: ${resetURL}`;
 
   try {
-    await sendEmail({
-      to: user.email,
-      subject: 'Password Reset Token',
-      text: message,
-    });
+    // await sendEmail({
+    //   to: user.email,
+    //   subject: 'Password Reset Token',
+    //   text: message,
+    // });
+
+    await new Email(user, resetURL).sendPasswordReset();
 
     res.status(200).json({
       staus: 'success',

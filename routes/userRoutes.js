@@ -20,6 +20,7 @@ userRouter.patch('/updateMyPassword', authController.updatePassword);
 userRouter.patch(
   '/updateMe',
   userController.uploadUserPhoto,
+  userController.resizeUserPhoto,
   userController.updateMe,
 );
 

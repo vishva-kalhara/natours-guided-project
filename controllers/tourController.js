@@ -1,5 +1,7 @@
 /* eslint-disable prettier/prettier */
 // const fs = require('fs');
+const multer = require('multer');
+const sharp = require('sharp');
 const Tour = require('../models/tourModel');
 const APIFeatures = require('../utils/apiFeatures');
 const catchAsync = require('../utils/catchAsync');
@@ -10,6 +12,23 @@ const factoryHandler = require('../utils/factoryHandlers');
 // let tours = JSON.parse(
 //   fs.readFileSync(`${__dirname}/../dev-data/data/tours-simple.json`, 'utf-8'),
 // );
+
+const multerStorage = multer.memoryStorage();
+
+const multerfilter = (req, file, cb) => {
+  if (file.mimetype.startsWith('image')) cb(null, true);
+  else cb(new AppError('Please upload an image!', 400), false);
+};
+
+const upload = multer({
+  storage: multerStorage,
+  fileFilter: multerfilter,
+});
+
+exports.uploadTourImages = upload.fields([
+  { name: 'imageCover', maxCount: 1 },
+  { name: 'images', maxCount: 3 },
+]);
 
 exports.checkId = async (req, res, next, val) => {
   try {

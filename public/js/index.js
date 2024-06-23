@@ -3,10 +3,12 @@
 
 const updateSettingsModule = require('./updateSettings');
 const authModule = require('./auth');
+const { bookTour } = require('./stripe');
 
 const loginForm = document.querySelector('.login-form');
 const userDataForm = document.querySelector('.form-user-data');
 const userPasswordForm = document.querySelector('.form-user-password');
+const btnBookTour = document.querySelector('#btn-book-tour');
 
 if (loginForm) {
   document.querySelector('.login-form').addEventListener('submit', (e) => {
@@ -25,12 +27,12 @@ if (userDataForm) {
     const btn = document.querySelector('.btn--save-settings');
     btn.textContent = 'Saving...';
 
-    const name = document.getElementById('name').value;
-    const email = document.getElementById('email').value;
-
-    const data = { name, email };
-
-    await updateSettingsModule.updateSettings('data', data);
+    const form = new FormData();
+    form.append('name', document.getElementById('name').value);
+    form.append('email', document.getElementById('email').value);
+    form.append('photo', document.getElementById('photo').files[0]);
+    // console.log(form);
+    await updateSettingsModule.updateSettings('data', form);
 
     btn.textContent = 'Save Settings';
   });
@@ -54,6 +56,13 @@ if (userPasswordForm) {
     btn.textContent = 'Save Password';
   });
 }
+
+if (btnBookTour)
+  btnBookTour.addEventListener('click', async () => {
+    btnBookTour.textContent = 'Processing...';
+    const { tourId } = btnBookTour.dataset;
+    await bookTour(tourId);
+  });
 
 document.querySelector('.nav__el--logout').addEventListener('click', () => {
   authModule.logout();

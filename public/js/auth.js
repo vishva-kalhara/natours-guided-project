@@ -26,7 +26,7 @@ exports.logout = async () => {
     });
     if (res.status === 200) window.location = '/';
   } catch (error) {
-    console.log(error.response);
+    // console.log(error.response);
     alertModule.showAlert('error', error.response.data.message);
     window.setTimeout(alertModule.hideAlert, 5000);
   }

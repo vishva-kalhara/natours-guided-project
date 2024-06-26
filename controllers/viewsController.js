@@ -1,4 +1,5 @@
 const Tour = require('../models/tourModel');
+const Booking = require('../models/bookingModel');
 const User = require('../models/userModel');
 const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
@@ -64,5 +65,23 @@ exports.getAccount = catchAsync(async (req, res, next) => {
     .render('account', {
       title: 'Wishva Kalhara',
       user,
+    });
+});
+
+exports.getMyTours = catchAsync(async (req, res, next) => {
+  const bookings = await Booking.find({ user: req.user.id });
+
+  const tourIDs = bookings.map((el) => el.tour);
+  const tours = await Tour.find({ _id: { $in: tourIDs } });
+
+  res
+    .status(200)
+    .set(
+      'Content-Security-Policy',
+      "connect-src 'self' https://cdnjs.cloudflare.com",
+    )
+    .render('overview', {
+      title: 'My Tours',
+      tours,
     });
 });

@@ -39,4 +39,6 @@ tourRouter
     tourController.deleteTour,
   );
 
+// tourRouter.get('/my-tours', authController.protect, tourController.getMyTours);
+
 module.exports = tourRouter;

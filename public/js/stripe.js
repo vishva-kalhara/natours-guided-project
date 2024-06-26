@@ -15,6 +15,6 @@ exports.bookTour = async (tourId) => {
   } catch (error) {
     // alertModule.showAlert('error', error.response.data.message);
     // window.setTimeout(alertModule.hideAlert, 5000);
-    console.log(error.response);
+    // console.log(error.response);
   }
 };

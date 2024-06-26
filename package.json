@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
-    "start": "npx cross-env NODE_ENV=development nodemon server.js",
-    "start:prod": "npx cross-env NODE_ENV=production nodemon server.js",
+    "start:dev": "npx cross-env NODE_ENV=development nodemon server.js",
+    "start": "node server.js",
     "debug": "ndb server.js",
     "watch:js": "parcel watch ./public/js/index.js --out-dir ./public/js --out-file bundle.js",
     "build:js": "parcel build ./public/js/index.js --out-dir ./public/js --out-file bundle.js"
